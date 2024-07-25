@@ -12,9 +12,20 @@ app.use(cors({
 }));
 app.use(bodyParser.json());
 
+const users = [];
+
 // Signup Route
 app.post('/signup', (req, res) => {
   const { email, password } = req.body;
+
+  const userExists = users.find(user => user.email === email);
+  if (userExists) {
+    return res.status(400).json({ message: 'User already exists' });
+  }
+
+  // Save user to the "database"
+  users.push({ email, password });
+
 
   // Handle signup logic here, e.g., save the user to the database
   console.log('User signed up:', { email, password });
@@ -24,9 +35,14 @@ app.post('/signup', (req, res) => {
 });
 
 // Signin Route
-app.post('/api/signin', (req, res) => {
-  const { email, password } = req.body;
-
+app.post('/signin', (req, res) => {
+    const { email, password } = req.body;
+    // Check if user exists
+    const user = users.find(user => user.email === email && user.password === password);
+    if (!user) {
+      return res.status(401).json({ message: 'Invalid email or password' });
+    }
+  
   // Handle signin logic here, e.g., verify user credentials
   console.log('User signed in:', { email, password });
 

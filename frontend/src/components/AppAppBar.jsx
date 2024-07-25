@@ -222,8 +222,8 @@ function AppAppBar({ mode, toggleColorMode }) {
                     <Button
                       color="primary"
                       variant="outlined"
-                      component="a"
-                      href="/material-ui/getting-started/templates/sign-in/"
+                      component={Link}
+                      to="/signin"
                       target="_blank"
                       sx={{ width: '100%' }}
                     >

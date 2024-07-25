@@ -12,12 +12,13 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import axios from './axiosConfig';
 
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
+      <Link color="inherit" href="https://ahmadzafar.netlify.app/">
         Your Website
       </Link>{' '}
       {new Date().getFullYear()}
@@ -31,13 +32,23 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function SignIn() {
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
+    
+    const user = {
       email: data.get('email'),
       password: data.get('password'),
-    });
+      
+    }
+    try {
+      const response = await axios.post('/signin', user);
+      console.log(response.data.message);
+      // Handle success, e.g., redirect to another page or show a success message
+    } catch (error) {
+      console.error('Error signing in:', error);
+      // Handle error, e.g., show an error message to the user
+    }
   };
 
   return (
