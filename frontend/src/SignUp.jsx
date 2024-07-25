@@ -12,6 +12,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import axios from './axiosConfig';
 
 function Copyright(props) {
   return (
@@ -31,13 +32,24 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function SignUp() {
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
+
+    const user = {
       email: data.get('email'),
       password: data.get('password'),
-    });
+    };
+
+   console.log(user); 
+    try {
+      const response = await axios.post('/signup', user);
+      console.log(response.data.message);
+      // You can handle further actions like redirecting the user or showing a success message here
+    } catch (error) {
+      console.error('Error signing up:', error);
+      // Handle error, e.g., show error message to the user
+    }
   };
 
   return (
